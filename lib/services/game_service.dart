@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -183,27 +182,6 @@ class GameService extends ChangeNotifier {
       }
     }
 
-    // Units move with their own animation phase. Mobile fighters patrol around
-    // their deployment point; turrets/support units stay anchored but animate.
-    for (final u in units) {
-      u.animationPhase += dt * (1.8 + progress.player.unitSpeedLevel * 0.12);
-      if (u.attackFlash > 0) u.attackFlash = (u.attackFlash - dt * 3.5).clamp(0.0, 1.0);
-      if (u.type == UnitType.crawler || u.specialId != null || u.type == UnitType.robot ||
-          u.type == UnitType.fireball) {
-        final radius = u.type == UnitType.crawler ? 9.0 : 4.0;
-        final base = u.movementTarget ?? u.position;
-        u.movementTarget ??= base;
-        // A small patrol arc gives each deployed fighter visible movement.
-        final phase = u.animationPhase + (u.id.hashCode % 100) / 17.0;
-        final target = Offset(base.dx + math.cos(phase) * radius,
-            base.dy + math.sin(phase * 0.8) * radius);
-        u.position = Offset(
-          u.position.dx + (target.dx - u.position.dx) * (dt * (1.5 + progress.player.unitSpeedLevel * .1)).clamp(0.0, 1.0),
-          u.position.dy + (target.dy - u.position.dy) * (dt * (1.5 + progress.player.unitSpeedLevel * .1)).clamp(0.0, 1.0),
-        );
-      }
-    }
-
     // Units attack
     final unitsMult = hero?.heroUnitsDamageMult ?? 1.0;
 
@@ -245,7 +223,6 @@ class GameService extends ChangeNotifier {
 
       if (target != null) {
         _damageEnemy(target, dmg, applySlow: u.specialId == 'void_mage');
-        u.attackFlash = 1.0;
         u.cooldownTimer = u.specialId != null
             ? (getSpecialCharacter(u.specialId!)?.unitCooldown ?? data.cooldown)
             : data.cooldown;
@@ -324,7 +301,7 @@ class GameService extends ChangeNotifier {
     if (!isPlaying || isPaused || !e.isAlive) return;
 
     final hero = activeHero;
-    double dmg = 18 + progress.player.level * 2.0 + progress.player.clickDamageLevel * 5.0;
+    double dmg = 18 + progress.player.level * 2.0;
     if (hero != null) {
       dmg *= hero.heroDamageMult;
     }

@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/game_service.dart';
@@ -236,21 +235,27 @@ class _HeroWidget extends StatelessWidget {
             ),
           ),
         Container(
-          width: 44,
-          height: 44,
+          width: 52,
+          height: 52,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: color.withOpacity(0.25),
+            color: color.withOpacity(0.15),
             border: Border.all(color: color, width: 2.5),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.5),
+                color: color.withOpacity(0.45),
                 blurRadius: 12,
                 spreadRadius: 1,
               ),
             ],
           ),
-          child: Icon(icon, color: color, size: 26),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/sprites/robot.png',
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Icon(icon, color: color, size: 28),
+            ),
+          ),
         ),
       ],
     );
@@ -280,30 +285,44 @@ class _UnitWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: Transform.scale(
-            scale: 1.0 + unit.attackFlash * 0.25,
-            child: Icon(char.icon, color: char.accentColor, size: 22 + unit.attackFlash * 4),
-          ),
+          child: Icon(char.icon, color: char.accentColor, size: 22),
         );
       }
     }
 
     final data = unit.data;
-    final pulse = unit.attackFlash;
-    final bob = (unit.animationPhase % 6.28);
-    return Transform.translate(
-      offset: Offset(0, -2.0 * (1 + math.sin(bob))),
-      child: Transform.scale(
-        scale: 1.0 + pulse * 0.22,
-        child: Container(
-          width: 36, height: 36,
-          decoration: BoxDecoration(
-            color: data.color.withOpacity(0.25 + pulse * 0.25),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: pulse > 0.1 ? Colors.white : data.color, width: 1.5 + pulse),
-            boxShadow: [BoxShadow(color: data.color.withOpacity(0.2 + pulse * 0.6), blurRadius: 4 + pulse * 12)],
-          ),
-          child: Icon(data.icon, color: data.color, size: 20 + pulse * 3),
+    String? sprite;
+    switch (unit.type) {
+      case UnitType.turret:
+        sprite = 'assets/sprites/turret.png';
+        break;
+      case UnitType.shield:
+        sprite = 'assets/sprites/shield.png';
+        break;
+      case UnitType.boost:
+        sprite = 'assets/sprites/boost.png';
+        break;
+      case UnitType.fireball:
+        sprite = 'assets/sprites/enemy_fire.png';
+        break;
+      default:
+        sprite = 'assets/sprites/robot.png';
+    }
+
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: data.color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: data.color, width: 1.5),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.asset(
+          sprite,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Icon(data.icon, color: data.color, size: 22),
         ),
       ),
     );
@@ -342,14 +361,23 @@ class _EnemyWidget extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         Container(
-          width: data.size,
-          height: data.size,
+          width: data.size + 8,
+          height: data.size + 8,
           decoration: BoxDecoration(
-            color: data.color.withOpacity(0.3),
+            color: data.color.withOpacity(0.15),
             shape: BoxShape.circle,
             border: Border.all(color: data.color, width: 2),
           ),
-          child: Icon(data.icon, color: data.color, size: data.size * 0.55),
+          child: ClipOval(
+            child: Image.asset(
+              enemy.type == EnemyType.red || enemy.type == EnemyType.boss
+                  ? 'assets/sprites/enemy_fire.png'
+                  : 'assets/sprites/enemy_green.png',
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) =>
+                  Icon(data.icon, color: data.color, size: data.size * 0.55),
+            ),
+          ),
         ),
       ],
     );

@@ -114,7 +114,7 @@ class MainMenuScreen extends StatelessWidget {
                               icon: Icons.store,
                               label: 'Магазин',
                               color: const Color(0xFFFF9800),
-                              onTap: () => Navigator.pushNamed(context, '/hub'),
+                              onTap: () => _showSoon(context),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -132,7 +132,7 @@ class MainMenuScreen extends StatelessWidget {
                               icon: Icons.assignment,
                               label: 'Квесты',
                               color: const Color(0xFF8BC34A),
-                              onTap: () => Navigator.pushNamed(context, '/hub'),
+                              onTap: () => _showSoon(context),
                             ),
                           ),
                         ],
@@ -145,7 +145,7 @@ class MainMenuScreen extends StatelessWidget {
                               icon: Icons.settings,
                               label: 'Настройки',
                               color: const Color(0xFF607D8B),
-                              onTap: () => Navigator.pushNamed(context, '/hub'),
+                              onTap: () => _showSoon(context),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -166,7 +166,7 @@ class MainMenuScreen extends StatelessWidget {
                               label: 'Персонажи',
                               color: const Color(0xFFE91E63),
                               onTap: () {
-                                Navigator.pushNamed(context, '/characters');
+                                Navigator.pushNamed(context, '/season');
                               },
                             ),
                           ),

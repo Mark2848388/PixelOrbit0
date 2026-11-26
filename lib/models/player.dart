@@ -30,14 +30,6 @@ class Player {
   int seasonXp;
   int seasonLevel;
   bool seasonPremium;
-  int clickDamageLevel;
-  int unitSpeedLevel;
-  int healthLevel;
-  int energyLevel;
-  List<String> claimedQuests;
-  bool soundEnabled;
-  bool vibrationEnabled;
-  String language;
 
   Player({
     this.name = 'Герой',
@@ -59,14 +51,6 @@ class Player {
     this.seasonXp = 0,
     this.seasonLevel = 1,
     this.seasonPremium = false,
-    this.clickDamageLevel = 0,
-    this.unitSpeedLevel = 0,
-    this.healthLevel = 0,
-    this.energyLevel = 0,
-    List<String>? claimedQuests,
-    this.soundEnabled = true,
-    this.vibrationEnabled = true,
-    this.language = 'Русский',
   })  : inventory = inventory ??
             {
               'robot': 1,
@@ -77,8 +61,7 @@ class Player {
               'boost': 1,
             },
         unlockedCharacters = unlockedCharacters ?? ['default'],
-        specialUnitCounts = specialUnitCounts ?? {},
-        claimedQuests = claimedQuests ?? [];
+        specialUnitCounts = specialUnitCounts ?? {};
 
   void addXp(int amount) {
     xp += amount;
@@ -125,14 +108,6 @@ class Player {
         'seasonXp': seasonXp,
         'seasonLevel': seasonLevel,
         'seasonPremium': seasonPremium,
-        'clickDamageLevel': clickDamageLevel,
-        'unitSpeedLevel': unitSpeedLevel,
-        'healthLevel': healthLevel,
-        'energyLevel': energyLevel,
-        'claimedQuests': claimedQuests,
-        'soundEnabled': soundEnabled,
-        'vibrationEnabled': vibrationEnabled,
-        'language': language,
       };
 
   factory Player.fromJson(Map<String, dynamic> json) {
@@ -158,14 +133,6 @@ class Player {
       seasonXp: json['seasonXp'] ?? 0,
       seasonLevel: json['seasonLevel'] ?? 1,
       seasonPremium: json['seasonPremium'] ?? false,
-      clickDamageLevel: json['clickDamageLevel'] ?? 0,
-      unitSpeedLevel: json['unitSpeedLevel'] ?? 0,
-      healthLevel: json['healthLevel'] ?? 0,
-      energyLevel: json['energyLevel'] ?? 0,
-      claimedQuests: List<String>.from(json['claimedQuests'] ?? []),
-      soundEnabled: json['soundEnabled'] ?? true,
-      vibrationEnabled: json['vibrationEnabled'] ?? true,
-      language: json['language'] ?? 'Русский',
     );
   }
 }

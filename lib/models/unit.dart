@@ -126,9 +126,6 @@ class PlacedUnit {
   double cooldownTimer;
   bool isAlive;
   String? specialId; // если это персонаж сезона
-  double animationPhase = 0;
-  double attackFlash = 0;
-  Offset? movementTarget;
 
   PlacedUnit({
     required this.id,
